@@ -10,6 +10,7 @@ export default class Task extends Component {
         return (
             <View key={this.props.keyval} style={styles.task}>
                 <Text style={styles.taskText}>Create Date : {this.props.val.date}</Text>
+                <Text style={styles.taskText}>Project : {this.props.val.ProjectName}</Text>
                 <Text style={styles.taskText}>TASK : {this.props.val.task}</Text>
                 <Text style={styles.taskText}>OWNER : {this.props.val.owner}</Text>
                 <TouchableOpacity onPress={this.props.deleteMethod} style={styles.taskDelete}>
@@ -25,7 +26,10 @@ const styles = StyleSheet.create({
         padding: 20,
         paddingRight: 100,
         borderBottomWidth:2,
-        borderBottomColor: '#ededed'
+        borderTopWidth:2,
+        borderBottomColor: '#ededed',
+        borderTopColor: '#ededed',
+        paddingTop: 30
     },
     taskText: {
         paddingLeft: 20,

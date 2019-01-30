@@ -23,7 +23,7 @@ export default class HomeScreen extends React.Component {
       const {navigate} = this.props.navigation;
       let projects = this.state.projectArray.map((val, key)=>{
           return <Project key={key} keyval={key} val={val}
-                  deleteMethod={()=>this.deleteProject(key)}
+                  deleteMethod={()=>this.deleteProject(key, val)}
                   detailMethod={() => this.detailMethod(navigate, val)}/>
       });
       return (
@@ -60,8 +60,12 @@ export default class HomeScreen extends React.Component {
           this.setState({projectText:''});
       }
   }
-  deleteProject(key){
+  deleteProject(key, value){
       this.state.projectArray.splice(key, 1);
+      store.taskArray.map((val, key)=>{
+        if( val.ProjectName == value.project)
+          store.taskArray.splice(key, 1);
+      });
       this.setState({projectArray: this.state.projectArray});
   }
   detailMethod(navigate, val){

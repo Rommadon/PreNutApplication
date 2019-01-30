@@ -8,6 +8,7 @@ import {
   TextInput,
 } from 'react-native';
 import Task from '../components/Task';
+import { store } from './Store';
 
 export default class TaskScreen extends React.Component {
   static navigationOptions = {
@@ -15,14 +16,18 @@ export default class TaskScreen extends React.Component {
   };
   constructor(props){
     super(props);
-    this.state = {
-        taskArray: [],
-        taskText: '',
-        taskOwner: '',
-    };
   }
+
+  componentDidMount() {
+    setInterval(() => {
+        this.setState(() => {
+            return { unseen: "does not display" }
+        });
+    }, 1000);
+  }
+    
   render() {
-      let tasks = this.state.taskArray.map((val, key)=>{
+      let tasks = store.taskArray.map((val, key)=>{
           return <Task key={key} keyval={key} val={val}
                   deleteMethod={()=>this.deleteTask(key)}/>
       });
@@ -31,48 +36,12 @@ export default class TaskScreen extends React.Component {
               <ScrollView style={styles.scrollContainer}>
                   {tasks}
               </ScrollView>
-              <View style={styles.footer}>
-                  <TextInput 
-                      style={styles.textInput}
-                      placeholder='Input Task :'
-                      onChangeText={(taskText)=> this.setState({taskText})}
-                      value={this.state.taskText}
-                      placeholderTextColor='white'
-                      underlineColorAndroid='transparent'>
-                  </TextInput>
-                  <TextInput 
-                      style={styles.textInput}
-                      placeholder='Input owner :'
-                      onChangeText={(taskOwner)=> this.setState({taskOwner})}
-                      value={this.state.taskOwner}
-                      placeholderTextColor='white'
-                      underlineColorAndroid='transparent'>
-                  </TextInput>
-              </View>
-              <TouchableOpacity onPress={ this.addtask.bind(this) } style={styles.addButton}>
-                  <Text style={styles.addButtonText}>+</Text>
-              </TouchableOpacity>
           </View>
-      );o
-  }
-  addtask(){
-    if(this.state.taskText || this.setState.taskOwner){
-        var d = new Date();
-        this.state.taskArray.push({
-            'date':d.getFullYear()+
-            "/"+(d.getMonth()+1) +
-            "/"+ d.getDate(),
-            'task': this.state.taskText,
-            'owner': this.state.taskOwner,
-        });
-        this.setState({ taskArray: this.state.taskArray });
-        this.setState({taskText:''});
-        this.setState({taskOwner:''});
-    }
+      );
   }
   deleteTask(key){
-      this.state.taskArray.splice(key, 1);
-      this.setState({taskArray: this.state.taskArray});
+    store.taskArray.splice(key, 1);
+    this.setState({taskText: this.state.taskText});
   }
 }
 
