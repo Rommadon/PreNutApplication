@@ -8,7 +8,7 @@ import {
   TextInput,
 } from 'react-native';
 import Project from '../components/Project';
-import { store } from './Store';
+import { store } from '../Store/Store';
 
 export default class HomeScreen extends React.Component {
   constructor(props){

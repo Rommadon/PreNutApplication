@@ -8,7 +8,7 @@ import {
   TextInput,
 } from 'react-native';
 import Task from '../components/Task';
-import { store } from './Store';
+import { store } from '../Store/Store';
 
 export default class ProjectScreen extends React.Component {
   constructor(props){
