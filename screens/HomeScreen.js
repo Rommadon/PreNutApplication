@@ -8,11 +8,9 @@ import {
   TextInput,
 } from 'react-native';
 import Project from '../components/Project';
+import { store } from './Store';
 
 export default class HomeScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Nut Application',
-  };
   constructor(props){
     super(props);
     this.state = {
@@ -22,14 +20,16 @@ export default class HomeScreen extends React.Component {
     };
   }
   render() {
+      const {navigate} = this.props.navigation;
       let projects = this.state.projectArray.map((val, key)=>{
           return <Project key={key} keyval={key} val={val}
-                  deleteMethod={()=>this.deleteProject(key)}/>
+                  deleteMethod={()=>this.deleteProject(key)}
+                  detailMethod={() => this.detailMethod(navigate, val)}/>
       });
       return (
           <View style={styles.container}>
               <ScrollView style={styles.scrollContainer}>
-                  {projects}
+                {projects}
               </ScrollView>
               <View style={styles.footer}>
                   <TextInput 
@@ -63,6 +63,10 @@ export default class HomeScreen extends React.Component {
   deleteProject(key){
       this.state.projectArray.splice(key, 1);
       this.setState({projectArray: this.state.projectArray});
+  }
+  detailMethod(navigate, val){
+    store.ProjectName = val.project;
+    navigate('Project')
   }
 }
 
