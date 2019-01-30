@@ -1,5 +1,13 @@
 import React from 'react';
-import { ExpoConfigView } from '@expo/samples';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  TextInput,
+} from 'react-native';
+import Task from '../components/Task';
 
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {

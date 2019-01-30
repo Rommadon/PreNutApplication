@@ -7,7 +7,7 @@ import {
   View,
   TextInput,
 } from 'react-native';
-import Task from '../components/Task';
+import Project from '../components/Project';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -16,63 +16,53 @@ export default class HomeScreen extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-        taskArray: [],
-        taskText: '',
-        taskOwner: '',
+        projectArray: [],
+        projectText: '',
+        projectOwner: '',
     };
   }
   render() {
-      let tasks = this.state.taskArray.map((val, key)=>{
-          return <Task key={key} keyval={key} val={val}
-                  deleteMethod={()=>this.deleteTask(key)}/>
+      let projects = this.state.projectArray.map((val, key)=>{
+          return <Project key={key} keyval={key} val={val}
+                  deleteMethod={()=>this.deleteProject(key)}/>
       });
       return (
           <View style={styles.container}>
               <ScrollView style={styles.scrollContainer}>
-                  {tasks}
+                  {projects}
               </ScrollView>
               <View style={styles.footer}>
                   <TextInput 
                       style={styles.textInput}
-                      placeholder='Input Task :'
-                      onChangeText={(taskText)=> this.setState({taskText})}
-                      value={this.state.taskText}
-                      placeholderTextColor='white'
-                      underlineColorAndroid='transparent'>
-                  </TextInput>
-                  <TextInput 
-                      style={styles.textInput}
-                      placeholder='Input Owner :'
-                      onChangeText={(taskOwner)=> this.setState({taskOwner})}
-                      value={this.state.taskOwner}
+                      placeholder='Input project :'
+                      onChangeText={(projectText)=> this.setState({projectText})}
+                      value={this.state.projectText}
                       placeholderTextColor='white'
                       underlineColorAndroid='transparent'>
                   </TextInput>
               </View>
-              <TouchableOpacity onPress={ this.addTask.bind(this) } style={styles.addButton}>
+              <TouchableOpacity onPress={ this.addproject.bind(this) } style={styles.addButton}>
                   <Text style={styles.addButtonText}>+</Text>
               </TouchableOpacity>
           </View>
-      );
+      );o
   }
-  addTask(){
-      if(this.state.taskText || this.setState.taskOwner){
+  addproject(){
+      if(this.state.projectText || this.setState.projectOwner){
           var d = new Date();
-          this.state.taskArray.push({
+          this.state.projectArray.push({
               'date':d.getFullYear()+
               "/"+(d.getMonth()+1) +
               "/"+ d.getDate(),
-              'task': this.state.taskText,
-              'owner': this.state.taskOwner
+              'project': this.state.projectText,
           });
-          this.setState({ taskArray: this.state.taskArray });
-          this.setState({taskText:''});
-          this.setState({taskOwner:''});
+          this.setState({ projectArray: this.state.projectArray });
+          this.setState({projectText:''});
       }
   }
-  deleteTask(key){
-      this.state.taskArray.splice(key, 1);
-      this.setState({taskArray: this.state.taskArray});
+  deleteProject(key){
+      this.state.projectArray.splice(key, 1);
+      this.setState({projectArray: this.state.projectArray});
   }
 }
 
