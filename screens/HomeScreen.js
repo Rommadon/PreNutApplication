@@ -18,18 +18,26 @@ export default class HomeScreen extends React.Component {
         showSelect: false,
         showCreate: false,
         showJoin: false,
-        projectArray: [],
+        // projectArray: [],
         projectText: '',
         projectId: '',
         projectOwner: '',
     };
   }
+  componentDidMount() {
+    setInterval(() => {
+        this.setState(() => {
+            return { unseen: "does not display" }
+        });
+    }, 1000);
+  }
+
   render() {
       const {navigate} = this.props.navigation;
-      let projects = this.state.projectArray.map((val, key)=>{
-          return <Project key={key} keyval={key} val={val}
-                  deleteMethod={()=>this.deleteProject(key, val)}
-                  detailMethod={() => this.detailMethod(navigate, val)}/>
+      let projects = store.projectArray.map((val, key)=>{
+        return <Project key={key} keyval={key} val={val}
+        deleteMethod={()=>this.deleteProject(key, val)}
+        detailMethod={() => this.detailMethod(navigate, val)}/>
       });
       return (
           <View style={styles.container}>
@@ -39,7 +47,7 @@ export default class HomeScreen extends React.Component {
               {this.state.showSelect == true ? 
                 <View style={styles.buttonAdd}>
                   <Button style={styles.buttonAddStyle}
-                    onPress={this.createproject.bind(this)}
+                    onPress={() => this.createproject(navigate)}
                     title="Create Project"
                     color="#E91E63"
                   />
@@ -51,75 +59,19 @@ export default class HomeScreen extends React.Component {
                 </View>
               : null }
               <View style={styles.footerFlex}>
-                {this.state.showCreate == true ? 
-                  <View style={styles.footer}>
-                      <TextInput 
-                          style={styles.textInput}
-                          placeholder='Add New project :'
-                          onChangeText={(projectText)=> this.setState({projectText})}
-                          value={this.state.projectText}
-                          placeholderTextColor='white'
-                          underlineColorAndroid='transparent'>
-                      </TextInput>
-                  </View>
-                : null }
-                {this.state.showJoin == true ? 
-                  <View style={styles.footer}>
-                      <TextInput 
-                          style={styles.textInput}
-                          placeholder='Input Id project :'
-                          onChangeText={(projectId)=> this.setState({projectId})}
-                          value={this.state.projectId}
-                          placeholderTextColor='white'
-                          underlineColorAndroid='transparent'>
-                      </TextInput>
-                  </View>
-                : null }
                 <TouchableOpacity onPress={ this.addproject.bind(this) } style={styles.addButton}>
                     <Text style={styles.addButtonText}>+</Text>
                 </TouchableOpacity>
               </View>
           </View>
-      );o
+      );
   }
   addproject(){
-    if(this.state.showCreate == true){
-      if(this.state.projectText || this.setState.projectOwner){
-          let code = "";
-          let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        
-          for (let i = 0; i < 5; i++)
-            code += possible.charAt(Math.floor(Math.random() * possible.length));
-          
-          var d = new Date();
-          this.state.projectArray.push({
-              'date':d.getFullYear()+
-              "/"+(d.getMonth()+1) +
-              "/"+ d.getDate(),
-              'project': this.state.projectText,
-              'project': code,
-              'id': code,
-          });
-          this.setState({ projectArray: this.state.projectArray });
-          this.setState({projectText:''});
-          this.setState({showCreate: false});
-      }
-    } 
-    // else if(this.state.showCreate == true){
-    //   if(this.state.projectId){
-        
-    //     this.setState({ projectArray: this.state.projectArray });
-    //     this.setState({projectText:''});
-    //     this.setState({showCreate: false});
-    // }
-    // }
-     else {
-      this.setState({showSelect: true});
-    }
+    this.setState({showSelect: true});
   }
-  createproject(){
-    this.setState({showCreate: true});
+  createproject(navigate){
     this.setState({showSelect: false});
+    navigate('CreateProject')
   }
   joinproject(){
     // this.setState({showJoin: true});
@@ -134,7 +86,7 @@ export default class HomeScreen extends React.Component {
       this.setState({projectArray: this.state.projectArray});
   }
   detailMethod(navigate, val){
-    store.ProjectName = val.project;
+    store.ProjectName = val.ProjectName;
     navigate('Project')
   }
 }

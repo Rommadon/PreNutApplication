@@ -10,7 +10,7 @@ export default class Project extends React.Component {
     return (
         <View key={this.props.keyval} style={styles.project}>
             <Text style={styles.projectText}>Create Date : {this.props.val.date}</Text>
-            <Text style={styles.projectText}>Project : {this.props.val.project}</Text>
+            <Text style={styles.projectText}>Project : {this.props.val.ProjectName}</Text>
             <TouchableOpacity onPress={this.props.deleteMethod} style={styles.projectDelete}>
                 <Text style={styles.projectDeleteText}>Delete</Text>
             </TouchableOpacity>
