@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
   TextInput,
+  Button,
 } from 'react-native';
 import Project from '../components/Project';
 import { store } from '../Store/Store';
@@ -14,8 +15,12 @@ export default class HomeScreen extends React.Component {
   constructor(props){
     super(props);
     this.state = {
+        showSelect: false,
+        showCreate: false,
+        showJoin: false,
         projectArray: [],
         projectText: '',
+        projectId: '',
         projectOwner: '',
     };
   }
@@ -31,34 +36,94 @@ export default class HomeScreen extends React.Component {
               <ScrollView style={styles.scrollContainer}>
                 {projects}
               </ScrollView>
-              <View style={styles.footer}>
-                  <TextInput 
-                      style={styles.textInput}
-                      placeholder='Input project :'
-                      onChangeText={(projectText)=> this.setState({projectText})}
-                      value={this.state.projectText}
-                      placeholderTextColor='white'
-                      underlineColorAndroid='transparent'>
-                  </TextInput>
+              {this.state.showSelect == true ? 
+                <View style={styles.buttonAdd}>
+                  <Button style={styles.buttonAddStyle}
+                    onPress={this.createproject.bind(this)}
+                    title="Create Project"
+                    color="#E91E63"
+                  />
+                  <Button style={styles.buttonAddStyle}
+                    onPress={this.joinproject.bind(this)}
+                    title="Join Project"
+                    color="#D3D3D3"
+                  />
+                </View>
+              : null }
+              <View style={styles.footerFlex}>
+                {this.state.showCreate == true ? 
+                  <View style={styles.footer}>
+                      <TextInput 
+                          style={styles.textInput}
+                          placeholder='Add New project :'
+                          onChangeText={(projectText)=> this.setState({projectText})}
+                          value={this.state.projectText}
+                          placeholderTextColor='white'
+                          underlineColorAndroid='transparent'>
+                      </TextInput>
+                  </View>
+                : null }
+                {this.state.showJoin == true ? 
+                  <View style={styles.footer}>
+                      <TextInput 
+                          style={styles.textInput}
+                          placeholder='Input Id project :'
+                          onChangeText={(projectId)=> this.setState({projectId})}
+                          value={this.state.projectId}
+                          placeholderTextColor='white'
+                          underlineColorAndroid='transparent'>
+                      </TextInput>
+                  </View>
+                : null }
+                <TouchableOpacity onPress={ this.addproject.bind(this) } style={styles.addButton}>
+                    <Text style={styles.addButtonText}>+</Text>
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity onPress={ this.addproject.bind(this) } style={styles.addButton}>
-                  <Text style={styles.addButtonText}>+</Text>
-              </TouchableOpacity>
           </View>
       );o
   }
   addproject(){
+    if(this.state.showCreate == true){
       if(this.state.projectText || this.setState.projectOwner){
+          let code = "";
+          let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        
+          for (let i = 0; i < 5; i++)
+            code += possible.charAt(Math.floor(Math.random() * possible.length));
+          
           var d = new Date();
           this.state.projectArray.push({
               'date':d.getFullYear()+
               "/"+(d.getMonth()+1) +
               "/"+ d.getDate(),
               'project': this.state.projectText,
+              'project': code,
+              'id': code,
           });
           this.setState({ projectArray: this.state.projectArray });
           this.setState({projectText:''});
+          this.setState({showCreate: false});
       }
+    } 
+    // else if(this.state.showCreate == true){
+    //   if(this.state.projectId){
+        
+    //     this.setState({ projectArray: this.state.projectArray });
+    //     this.setState({projectText:''});
+    //     this.setState({showCreate: false});
+    // }
+    // }
+     else {
+      this.setState({showSelect: true});
+    }
+  }
+  createproject(){
+    this.setState({showCreate: true});
+    this.setState({showSelect: false});
+  }
+  joinproject(){
+    // this.setState({showJoin: true});
+    // this.setState({showSelect: false});
   }
   deleteProject(key, value){
       this.state.projectArray.splice(key, 1);
@@ -77,10 +142,11 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
   scrollContainer: {
-      flex: 1,
-      marginBottom: 100
+      marginBottom: 210
   },
   footer: {
       position: 'absolute',
@@ -100,7 +166,7 @@ const styles = StyleSheet.create({
       position: 'absolute',
       zIndex: 11,
       right: 20,
-      bottom: 90,
+      bottom: 50,
       backgroundColor: '#E91E63',
       width: 70,
       height: 70,
@@ -113,4 +179,18 @@ const styles = StyleSheet.create({
       color: '#fff',
       fontSize: 24
   },
+  buttonAdd: {
+    position: 'absolute',
+    zIndex: 11,
+    bottom: 130,
+    width: 150,
+    right: 17,
+    height: 70,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonAddStyle: {
+    marginBottom: 10,
+    backgroundColor: '#E91E63',
+  }
 });
