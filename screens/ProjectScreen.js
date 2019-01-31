@@ -18,7 +18,15 @@ export default class ProjectScreen extends React.Component {
         taskOwner: '',
     };
   }
+  componentDidMount() {
+    setInterval(() => {
+        this.setState(() => {
+            return { unseen: "does not display" }
+        });
+    }, 1000);
+  }
   render() {
+      const {navigate} = this.props.navigation;
       let tasks = store.taskArray.map((val, key)=>{
         if( val.ProjectName == store.ProjectName)
           return <Task key={key} keyval={key} val={val}
@@ -35,44 +43,14 @@ export default class ProjectScreen extends React.Component {
               <ScrollView style={styles.scrollContainer}>
                   {tasks}
               </ScrollView>
-              <View style={styles.footer}>
-                  <TextInput 
-                      style={styles.textInput}
-                      placeholder='Input Task :'
-                      onChangeText={(taskText)=> this.setState({taskText})}
-                      value={this.state.taskText}
-                      placeholderTextColor='white'
-                      underlineColorAndroid='transparent'>
-                  </TextInput>
-                  <TextInput 
-                      style={styles.textInput}
-                      placeholder='Input owner :'
-                      onChangeText={(taskOwner)=> this.setState({taskOwner})}
-                      value={this.state.taskOwner}
-                      placeholderTextColor='white'
-                      underlineColorAndroid='transparent'>
-                  </TextInput>
-              </View>
-              <TouchableOpacity onPress={ this.addtask.bind(this) } style={styles.addButton}>
+              <TouchableOpacity onPress={ () => this.addtask(navigate) } style={styles.addButton}>
                   <Text style={styles.addButtonText}>+</Text>
               </TouchableOpacity>
           </View>
       );
   }
-  addtask(){
-    if(this.state.taskText || this.setState.taskOwner){
-        var d = new Date();
-        store.taskArray.push({
-            'ProjectName': store.ProjectName,
-            'date':d.getFullYear()+
-            "/"+(d.getMonth()+1) +
-            "/"+ d.getDate(),
-            'task': this.state.taskText,
-            'owner': this.state.taskOwner,
-        });
-        this.setState({taskText:''});
-        this.setState({taskOwner:''});
-    }
+  addtask(navigate){
+    navigate('CreateTask')
   }
   deleteTask(key){
       store.taskArray.splice(key, 1);
@@ -117,7 +95,7 @@ const styles = StyleSheet.create({
       position: 'absolute',
       zIndex: 11,
       right: 20,
-      bottom: 90,
+      bottom: 40,
       backgroundColor: '#E91E63',
       width: 70,
       height: 70,

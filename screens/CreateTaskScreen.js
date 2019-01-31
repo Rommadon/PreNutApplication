@@ -15,42 +15,56 @@ export default class SignUpView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nameProject: '',
-    }
+      taskText: '',
+      taskOwner: '',
+    };
   }
 
   render() {
-    const {navigate} = this.props.navigation;
+    const { goBack } = this.props.navigation;
     return (
       <View style={styles.container}>
         <View style={styles.inputContainer}>
           <Image style={styles.inputIcon} source={{uri: 'https://png.icons8.com/male-user/ultraviolet/50/3498db'}}/>
           <TextInput style={styles.inputs}
             style={styles.textInput}
-            placeholder='Project Name :'
-            onChangeText={(nameProject)=> this.setState({nameProject})}
-            value={this.state.nameProject}
+            placeholder='Task Name :'
+            onChangeText={(taskText)=> this.setState({taskText})}
+            value={this.state.taskText}
             placeholderTextColor='black'
             underlineColorAndroid='transparent'/>
         </View>
-        <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]}  onPress={ () => this.addProject(navigate)}>
-          <Text style={styles.signUpText}>Add Project</Text>
+        <View style={styles.inputContainer}>
+          <Image style={styles.inputIcon} source={{uri: 'https://png.icons8.com/male-user/ultraviolet/50/3498db'}}/>
+          <TextInput style={styles.inputs}
+            style={styles.textInput}
+            placeholder='Task Owner :'
+            onChangeText={(taskOwner)=> this.setState({taskOwner})}
+            value={this.state.taskOwner}
+            placeholderTextColor='black'
+            underlineColorAndroid='transparent'/>
+        </View>
+        <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]}  onPress={ () => this.addTask(goBack)}>
+          <Text style={styles.signUpText}>Add Task</Text>
         </TouchableHighlight>
       </View>
     );
   }
 
-  addProject(navigate){
-    if(this.state.nameProject){
+  addTask(goBack){
+    if(this.state.taskText || this.setState.taskOwner){
         var d = new Date();
-        store.projectArray.push({
-          'ProjectName': this.state.nameProject,
-          'date':d.getFullYear()+
-          "/"+(d.getMonth()+1) +
-          "/"+ d.getDate(),
+        store.taskArray.push({
+            'ProjectName': store.ProjectName,
+            'date':d.getFullYear()+
+            "/"+(d.getMonth()+1) +
+            "/"+ d.getDate(),
+            'task': this.state.taskText,
+            'owner': this.state.taskOwner,
         });
-        this.setState({nameProject:''});
-        navigate('Home')
+        this.setState({taskText:''});
+        this.setState({taskOwner:''});
+        goBack();
     }
   }
 }

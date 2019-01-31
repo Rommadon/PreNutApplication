@@ -18,7 +18,6 @@ export default class HomeScreen extends React.Component {
         showSelect: false,
         showCreate: false,
         showJoin: false,
-        // projectArray: [],
         projectText: '',
         projectId: '',
         projectOwner: '',
@@ -78,9 +77,9 @@ export default class HomeScreen extends React.Component {
     // this.setState({showSelect: false});
   }
   deleteProject(key, value){
-      this.state.projectArray.splice(key, 1);
+      store.projectArray.splice(key, 1);
       store.taskArray.map((val, key)=>{
-        if( val.ProjectName == value.project)
+        if( val.ProjectName == value.ProjectName)
           store.taskArray.splice(key, 1);
       });
       this.setState({projectArray: this.state.projectArray});
